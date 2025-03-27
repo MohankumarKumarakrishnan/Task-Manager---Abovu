@@ -1,7 +1,8 @@
+ import TaskManager from "./components/TaskManager"
  const App = () => {
     return (
       <div>
-        Hello World 
+        <TaskManager />
       </div>
     )
   }
