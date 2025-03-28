@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null); 
   const navigate = useNavigate()
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -11,6 +12,7 @@ const Login = () => {
 
   const handleSubmit = async (e) =>  {
     e.preventDefault();
+    setSuccess(null);
     if (!formData.email || !formData.password) {
       setError("All fields are required!");
       return;
@@ -23,16 +25,28 @@ const Login = () => {
       body: JSON.stringify({ formData }),
     });
   const parseResp = await sendUser.json();
-  console.log(parseResp)
-    alert("Login Successful!");
-    navigate("/")
+  if(parseResp.error){
+    setSuccess(null); 
+    setError(parseResp.error)
+ }
+ if(parseResp.message){
+  setError(null);
+  setSuccess(parseResp.message)
+  localStorage.setItem('jwtToken',parseResp.jwtToken)
+  setTimeout(()=>{
+   setSuccess(null)
+   navigate('/')
+  },2000)
+}
+  
   };
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md w-96">
         <h2 className="text-2xl font-bold text-center text-blue-600">Login</h2>
-        {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+        {success && <p className="text-green-500 text-center mt-2">{success}</p>}
+        {error && <p className="text-red-500 text-center mt-2">{error}</p>} 
         <form onSubmit={handleSubmit} className="mt-4">
           <input
             type="email"
