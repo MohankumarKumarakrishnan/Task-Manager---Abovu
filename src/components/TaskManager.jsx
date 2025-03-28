@@ -11,7 +11,7 @@ const TaskManager = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        let response = await fetch("https://task-manager-backend-abouv.onrender.com:5500/crud/getalltasks", {
+        let response = await fetch("https://task-manager-backend-abouv.onrender.com/crud/getalltasks", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -39,7 +39,7 @@ const TaskManager = () => {
       try {
         setIsLoading(true);
 
-        let response = await fetch("https://task-manager-backend-abouv.onrender.com:5500/crud/createtask", {
+        let response = await fetch("https://task-manager-backend-abouv.onrender.com/crud/createtask", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -67,7 +67,7 @@ const TaskManager = () => {
     try {
       setIsLoading(true);
 
-      let response = await fetch("https://task-manager-backend-abouv.onrender.com:5500/crud/deletetask", {
+      let response = await fetch("https://task-manager-backend-abouv.onrender.com/crud/deletetask", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -98,7 +98,7 @@ const TaskManager = () => {
     try {
       setIsLoading(true);
 
-      let response = await fetch("https://task-manager-backend-abouv.onrender.com:5500/crud/updatetask", {
+      let response = await fetch("https://task-manager-backend-abouv.onrender.com/crud/updatetask", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

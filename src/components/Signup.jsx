@@ -18,7 +18,7 @@ const Signup = () => {
       return;
     }
     setError(null);
-    const sendUser = await fetch('https://task-manager-backend-abouv.onrender.com:5500/auth/newuser', {
+    const sendUser = await fetch('https://task-manager-backend-abouv.onrender.com/auth/newuser', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ formData }),
