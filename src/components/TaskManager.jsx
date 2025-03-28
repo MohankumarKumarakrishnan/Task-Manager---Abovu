@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 
 const TaskManager = () => {
-  const [tasks, setTasks] = useState(null); // Initially null to differentiate between empty list and loading
+  const [tasks, setTasks] = useState(null);
   const [task, setTask] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch tasks when component mounts
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -21,7 +20,8 @@ const TaskManager = () => {
         });
 
         let parsedData = await response.json();
-        setTasks(parsedData.allTasks?.tasks || []); // Ensure it's always an array
+        console.log(parsedData.allTasks.tasks);
+        setTasks(parsedData.allTasks || []);
         setError(null);
       } catch (err) {
         console.error(err);
@@ -44,11 +44,14 @@ const TaskManager = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ jwtToken: localStorage.getItem("jwtToken"), task }),
+          body: JSON.stringify({
+            jwtToken: localStorage.getItem("jwtToken"),
+            task,
+          }),
         });
 
         let parsedData = await response.json();
-        setTasks(parsedData.allTasks?.tasks || []);
+        setTasks(parsedData.allTasks || []);
         setTask("");
         setError(null);
       } catch (err) {
@@ -69,11 +72,14 @@ const TaskManager = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ jwtToken: localStorage.getItem("jwtToken"), taskId: id }),
+        body: JSON.stringify({
+          jwtToken: localStorage.getItem("jwtToken"),
+          taskId: id,
+        }),
       });
 
       let parsedData = await response.json();
-      setTasks(parsedData.allTasks?.tasks || []);
+      setTasks(parsedData.allTasks || []);
       setError(null);
     } catch (err) {
       console.error(err);
@@ -105,7 +111,7 @@ const TaskManager = () => {
       });
 
       let parsedData = await response.json();
-      setTasks(parsedData.allTasks?.tasks || []);
+      setTasks(parsedData.allTasks || []);
       setEditingId(null);
       setEditText("");
       setError(null);
@@ -122,7 +128,9 @@ const TaskManager = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100 p-5">
-      <h1 className="text-3xl font-bold text-blue-600 mb-5">Project Task Manager</h1>
+      <h1 className="text-3xl font-bold text-blue-600 mb-5">
+        Project Task Manager
+      </h1>
 
       <div className="bg-white p-5 rounded-lg shadow-lg w-full max-w-md">
         <input
@@ -147,7 +155,10 @@ const TaskManager = () => {
           <p className="text-gray-500 text-center">No tasks added yet.</p>
         ) : (
           tasks.map((t) => (
-            <div key={t._id} className="flex items-center justify-between bg-white p-3 rounded-lg shadow-md mb-3">
+            <div
+              key={t._id}
+              className="flex items-center justify-between bg-white p-3 rounded-lg shadow-md mb-3"
+            >
               {editingId === t._id ? (
                 <input
                   type="text"
@@ -160,15 +171,24 @@ const TaskManager = () => {
               )}
               <div className="flex gap-2">
                 {editingId === t._id ? (
-                  <button onClick={handleUpdateTask} className="bg-green-500 text-white px-3 py-1 rounded-md">
+                  <button
+                    onClick={handleUpdateTask}
+                    className="bg-green-500 text-white px-3 py-1 rounded-md"
+                  >
                     Save
                   </button>
                 ) : (
-                  <button onClick={() => handleEditTask(t._id, t.taskName)} className="bg-yellow-500 text-white px-3 py-1 rounded-md">
+                  <button
+                    onClick={() => handleEditTask(t._id, t.taskName)}
+                    className="bg-yellow-500 text-white px-3 py-1 rounded-md"
+                  >
                     Edit
                   </button>
                 )}
-                <button onClick={() => handleDeleteTask(t._id)} className="bg-red-500 text-white px-3 py-1 rounded-md">
+                <button
+                  onClick={() => handleDeleteTask(t._id)}
+                  className="bg-red-500 text-white px-3 py-1 rounded-md"
+                >
                   Delete
                 </button>
               </div>
